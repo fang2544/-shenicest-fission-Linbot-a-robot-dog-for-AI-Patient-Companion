@@ -1,0 +1,114 @@
+hospital: showroom_cardiology_followup_demo
+
+cost_model:
+  unit: seconds
+  reference_walk_speed_mps: 0.30
+  description: 4x3米展厅低速演示；各楼层是同一场地的独立二维地图
+
+pickup_policy:
+  home_node: cardiology_3f
+  allowed_pickup_nodes: [garage_pickup]
+  allowed_destination_nodes:
+    - cardiology_3f
+    - blood_draw_1f
+    - ecg_2f
+    - echo_waiting_2f
+    - cardiac_ultrasound_2f
+    - registration_1f
+    - cashier_1f
+    - pharmacy_1f
+    - imaging_2f
+    - nurse_station_3f
+    - restroom_1f
+    - garage_pickup
+  accepted_signal_sources: [signed_qr, mini_program, voice_gateway, staff_console, uwb_gateway]
+  arbitrary_coordinates_allowed: false
+
+# 每张地图都在同一块4x3米空地上独立扫描。坐标只是展厅占位值，真机必须复测。
+floors:
+  B1:
+    map_name: showroom_B1
+    nodes:
+      elevator_A_B1:
+        {name: A电梯B1口, type: elevator, elevator_id: A, x: -1.5, y: 0.0, yaw: 0.0}
+      garage_corridor_B1:
+        {name: 地库连廊, type: corridor, x: -0.3, y: 0.0, yaw: 0.0}
+      garage_pickup:
+        {name: 地库接客区, type: pickup, x: 1.1, y: 0.8, yaw: 1.57}
+      parking_payment:
+        {name: 停车缴费处, type: poi, x: 1.1, y: -0.8, yaw: -1.57}
+
+  F1:
+    map_name: showroom_F1
+    nodes:
+      elevator_A_F1:
+        {name: A电梯F1口, type: elevator, elevator_id: A, x: -1.5, y: 0.0, yaw: 0.0}
+      corridor_F1:
+        {name: 一层主走廊, type: corridor, x: -0.5, y: 0.0, yaw: 0.0}
+      lobby_1f:
+        {name: 门诊大厅, type: poi, x: 0.3, y: 0.0, yaw: 0.0}
+      registration_1f:
+        {name: 挂号窗口, type: poi, x: 1.35, y: 0.95, yaw: 1.57}
+      blood_draw_1f:
+        {name: 抽血窗口, type: poi, x: 1.35, y: 0.32, yaw: 1.57}
+      cashier_1f:
+        {name: 缴费窗口, type: poi, x: 1.35, y: -0.32, yaw: -1.57}
+      pharmacy_1f:
+        {name: 门诊药房, type: poi, x: 1.35, y: -0.95, yaw: -1.57}
+      restroom_1f:
+        {name: 一楼无障碍卫生间, type: restroom, x: 0.25, y: -1.05, yaw: -1.57}
+
+  F2:
+    map_name: showroom_F2
+    nodes:
+      elevator_A_F2:
+        {name: A电梯F2口, type: elevator, elevator_id: A, x: -1.5, y: 0.0, yaw: 0.0}
+      corridor_F2:
+        {name: 二层检查走廊, type: corridor, x: -0.4, y: 0.0, yaw: 0.0}
+      ecg_2f:
+        {name: 心电图室, type: poi, x: 0.55, y: 0.85, yaw: 1.57}
+      echo_waiting_2f:
+        {name: 彩超候诊区, type: waiting, x: 0.55, y: -0.85, yaw: -1.57}
+      cardiac_ultrasound_2f:
+        {name: 心脏彩超室, type: poi, x: 1.45, y: -0.85, yaw: 0.0}
+      imaging_2f:
+        {name: 影像检查区, type: poi, x: 1.45, y: 0.85, yaw: 0.0}
+
+  F3:
+    map_name: showroom_F3
+    nodes:
+      elevator_A_F3:
+        {name: A电梯F3口, type: elevator, elevator_id: A, x: -1.5, y: 0.0, yaw: 0.0}
+      corridor_F3:
+        {name: 三层门诊走廊, type: corridor, x: -0.4, y: 0.0, yaw: 0.0}
+      cardiology_waiting_3f:
+        {name: 心内科候诊区, type: waiting, x: 0.45, y: 0.0, yaw: 0.0}
+      cardiology_3f:
+        {name: 心内科诊室, type: poi, x: 1.35, y: 0.75, yaw: 1.57}
+      nurse_station_3f:
+        {name: 心内科护士站, type: poi, x: 1.35, y: -0.75, yaw: -1.57}
+
+edges:
+  - {id: B1_lift_corridor, from: elevator_A_B1, to: garage_corridor_B1, type: walk, distance_m: 1.2, travel_time_sec: 5, bidirectional: true}
+  - {id: B1_corridor_pickup, from: garage_corridor_B1, to: garage_pickup, type: walk, distance_m: 1.6, travel_time_sec: 7, bidirectional: true}
+  - {id: B1_corridor_payment, from: garage_corridor_B1, to: parking_payment, type: walk, distance_m: 1.6, travel_time_sec: 7, bidirectional: true}
+  - {id: F1_lift_corridor, from: elevator_A_F1, to: corridor_F1, type: walk, distance_m: 1.0, travel_time_sec: 4, bidirectional: true}
+  - {id: F1_corridor_lobby, from: corridor_F1, to: lobby_1f, type: walk, distance_m: 0.8, travel_time_sec: 3, bidirectional: true}
+  - {id: F1_lobby_registration, from: lobby_1f, to: registration_1f, type: walk, distance_m: 1.4, travel_time_sec: 6, bidirectional: true}
+  - {id: F1_lobby_blood, from: lobby_1f, to: blood_draw_1f, type: walk, distance_m: 1.1, travel_time_sec: 5, bidirectional: true}
+  - {id: F1_lobby_cashier, from: lobby_1f, to: cashier_1f, type: walk, distance_m: 1.1, travel_time_sec: 5, bidirectional: true}
+  - {id: F1_lobby_pharmacy, from: lobby_1f, to: pharmacy_1f, type: walk, distance_m: 1.4, travel_time_sec: 6, bidirectional: true}
+  - {id: F1_lobby_restroom, from: lobby_1f, to: restroom_1f, type: walk, distance_m: 1.1, travel_time_sec: 5, bidirectional: true}
+  - {id: F2_lift_corridor, from: elevator_A_F2, to: corridor_F2, type: walk, distance_m: 1.1, travel_time_sec: 5, bidirectional: true}
+  - {id: F2_corridor_ecg, from: corridor_F2, to: ecg_2f, type: walk, distance_m: 1.3, travel_time_sec: 6, bidirectional: true}
+  - {id: F2_corridor_echo_wait, from: corridor_F2, to: echo_waiting_2f, type: walk, distance_m: 1.3, travel_time_sec: 6, bidirectional: true}
+  - {id: F2_ecg_imaging, from: ecg_2f, to: imaging_2f, type: walk, distance_m: 0.9, travel_time_sec: 4, bidirectional: true}
+  - {id: F2_wait_echo, from: echo_waiting_2f, to: cardiac_ultrasound_2f, type: walk, distance_m: 0.9, travel_time_sec: 4, bidirectional: true}
+  - {id: F3_lift_corridor, from: elevator_A_F3, to: corridor_F3, type: walk, distance_m: 1.1, travel_time_sec: 5, bidirectional: true}
+  - {id: F3_corridor_waiting, from: corridor_F3, to: cardiology_waiting_3f, type: walk, distance_m: 0.9, travel_time_sec: 4, bidirectional: true}
+  - {id: F3_waiting_clinic, from: cardiology_waiting_3f, to: cardiology_3f, type: walk, distance_m: 1.2, travel_time_sec: 5, bidirectional: true}
+  - {id: F3_waiting_nurse, from: cardiology_waiting_3f, to: nurse_station_3f, type: walk, distance_m: 1.2, travel_time_sec: 5, bidirectional: true}
+  - {id: lift_A_B1_F1, from: elevator_A_B1, to: elevator_A_F1, type: elevator, elevator_id: A, travel_time_sec: 18, bidirectional: true}
+  - {id: lift_A_F1_F2, from: elevator_A_F1, to: elevator_A_F2, type: elevator, elevator_id: A, travel_time_sec: 18, bidirectional: true}
+  - {id: lift_A_F2_F3, from: elevator_A_F2, to: elevator_A_F3, type: elevator, elevator_id: A, travel_time_sec: 18, bidirectional: true}
+  - {id: lift_A_F1_F3, from: elevator_A_F1, to: elevator_A_F3, type: elevator, elevator_id: A, travel_time_sec: 24, bidirectional: true}
