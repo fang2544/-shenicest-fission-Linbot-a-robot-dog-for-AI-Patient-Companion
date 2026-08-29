@@ -12,8 +12,8 @@
 
 | 部分 | 载体 | 解决的问题 | 详细说明 |
 | --- | --- | --- | --- |
-| **Part 1：机器狗陪诊导航** | Vbot 四足机器人「大头BoBo」+ ROS 2 | 迎接、挂号引导、科室带路、设施指引、跟随陪伴、跟丢暂停提醒、任务调度（含厕所插队、AED 任务抢占与断点恢复） | [`part1_hospital_escort_robot/README.md`](./part1_hospital_escort_robot/README.md) |
-| **Part 2：insta360 视觉识别** | insta360 全景摄像头 | AED 急救场景下的药物/急救物资识别，为现场处置和物资配送提供视觉判断依据 | [`part2_insta360_medication_id/README.md`](./part2_insta360_medication_id/README.md) |
+| **Part 1：机器狗陪诊导航** | Vbot 四足机器人「大头BoBo」+ ROS 2 | 迎接、挂号引导、科室带路、设施指引、跟随陪伴、跟丢暂停提醒、任务调度（含厕所插队、AED 任务抢占与断点恢复） | [`part1/README.md`](./part1/README.md) |
+| **Part 2：insta360 视觉识别** | insta360 全景摄像头 | AED 急救场景下的药物/急救物资识别，为现场处置和物资配送提供视觉判断依据 | [`part2/README.md`](./part2/README.md) |
 
 > 目录名以本仓库当前实际结构为准；如果两部分的文件夹命名和这里不一致，请以仓库里的真实路径为准，链接同步替换即可。
 
