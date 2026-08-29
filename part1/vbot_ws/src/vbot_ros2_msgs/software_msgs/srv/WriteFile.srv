@@ -1,0 +1,9 @@
+# Write file content to an absolute path on the target SoC.
+# The content is carried in the message body (not a shell command), so secrets
+# such as WiFi passwords never enter any shell argv or process command line.
+string path
+string content
+---
+# Response indicates whether the file was written.
+bool success
+string message
