@@ -1,0 +1,44 @@
+# ROS 2 Humble / Jammy 没有完整发布 ARM64 版 Gazebo Classic 和 gazebo_ros。
+# ARM64 镜像用于常规开发，完整仿真通过 Docker Desktop 模拟 amd64 镜像运行。
+FROM m.daocloud.io/docker.io/library/ros:humble-ros-base-jammy
+
+SHELL ["/bin/bash", "-c"]
+
+RUN sed -i \
+    -e 's@http://archive.ubuntu.com/ubuntu@https://mirrors.tuna.tsinghua.edu.cn/ubuntu@g' \
+    -e 's@http://security.ubuntu.com/ubuntu@https://mirrors.tuna.tsinghua.edu.cn/ubuntu@g' \
+    /etc/apt/sources.list
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential \
+        git \
+        mesa-utils \
+        python3-colcon-common-extensions \
+        python3-numpy \
+        python3-pytest \
+        python3-rosdep \
+        ros-humble-gazebo-ros-pkgs \
+        ros-humble-joint-state-publisher \
+        ros-humble-navigation2 \
+        ros-humble-nav2-bringup \
+        ros-humble-robot-state-publisher \
+        ros-humble-rviz2 \
+        ros-humble-slam-toolbox \
+        ros-humble-teleop-twist-keyboard \
+        ros-humble-xacro \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        fluxbox \
+        novnc \
+        websockify \
+        x11vnc \
+        xvfb \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /vbot_ws
+COPY scripts/build/build_vbot_ws.sh /usr/local/bin/build_vbot_ws
+RUN chmod +x /usr/local/bin/build_vbot_ws
+CMD ["bash"]
