@@ -63,8 +63,8 @@ Part 1 负责"把对的物资和人送到现场、事后接回流程"，Part 2 �
 
 本仓库不提供跨两部分的统一构建脚本，两部分技术栈和运行环境相互独立，请分别进入对应目录，按各自 README 的说明搭建环境、构建和运行：
 
-- 机器狗 / ROS 2 部分：见 [`part1_hospital_escort_robot/README.md`](./part1_hospital_escort_robot/README.md)（环境依赖、`colcon build`、仿真与真机接入、测试方式均在其中）
-- insta360 视觉识别部分：见 [`part2_insta360_medication_id/README.md`](./part2_insta360_medication_id/README.md)
+- 机器狗 / ROS 2 部分：见 [`part1/README.md`](./part1/README.md)（环境依赖、`colcon build`、仿真与真机接入、测试方式均在其中）
+- insta360 视觉识别部分：见 [`part2/README.md`](./part2/README.md)
 
 ## 许可与免责声明
 
