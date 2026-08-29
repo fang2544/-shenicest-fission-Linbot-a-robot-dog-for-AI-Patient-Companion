@@ -1,0 +1,35 @@
+# BaseAction.srv
+# Service for controlling basic robot movements and rotations
+# Based on base_action_service README.md specification
+uint8 target_state     # Target state: 0=OFF, 1=ON
+uint8 mode             # Mode selects which base action to execute (see constants below)
+string req_id          # Request ID for trace
+bool pre_check         # If true, only perform the prepare/check phase
+bool allow_head_only_fallback # ROTATE_IN_PLACE only: wake-turn requests may degrade unsafe body rotation to head-only
+
+# Mode values (user-friendly)
+uint8 ROTATE_IN_PLACE = 0
+uint8 MOVE_FORWARD    = 1
+uint8 MOVE_BACKWARD   = 2
+uint8 MOVE_LEFT       = 3
+uint8 MOVE_RIGHT      = 4
+uint8 NAV_TO_POINT    = 5  # Navigate to (x, y) and face towards target point
+uint8 MOVE_HEAD       = 6  # Move head to specified pitch/yaw angles (no obstacle avoidance)
+
+# Request parameters (interpreted based on mode)
+float32 angle_rad        # Used when mode == ROTATE_IN_PLACE (positive = counterclockwise); for MOVE_HEAD this is pitch (radians)
+float32 distance_m       # Used when mode is a movement (ignored if steps > 0)
+int32 steps              # Alternative to distance (0 = use distance_m, >0 = steps * step_distance)
+float32 x                # Target x coordinate (used with NAV_TO_POINT mode)
+float32 y                # Target y coordinate (used with NAV_TO_POINT mode)
+float32 z                # Target z coordinate (height in meters)
+bool has_z               # Whether z is provided
+float32 stop_distance    # Arrival threshold override for NAV_TO_POINT (0.0 = use config default)
+
+---
+
+# Response
+bool success            # Whether the action was successful
+string message          # Status message or error description; "wake_turn_head_only" means ROTATE_IN_PLACE was degraded to head-only by wake_turn_guard
+int32 error_code        # Error code: 0=none, 1=odom_unavailable, 2=odom_stale, 3=position_not_initialized, 4=odom_resetting, 5=head_fallback_unavailable, 6=safety_distance_obstacle
+string error_detail     # Optional structured JSON failure detail propagated to RCP TaskFailed
