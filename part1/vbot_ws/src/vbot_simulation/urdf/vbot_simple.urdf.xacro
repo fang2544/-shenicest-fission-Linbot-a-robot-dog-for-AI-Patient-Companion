@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="vbot_simple">
+  <!-- 按公开的 613×339×569 毫米站立外廓建立近似模型。 -->
+  <xacro:property name="body_length" value="0.613"/>
+  <xacro:property name="body_width" value="0.339"/>
+  <xacro:property name="body_height" value="0.240"/>
+  <xacro:property name="body_z" value="0.365"/>
+
+  <material name="vbot_white"><color rgba="0.88 0.90 0.92 1"/></material>
+  <material name="vbot_dark"><color rgba="0.08 0.10 0.12 1"/></material>
+  <material name="sensor_blue"><color rgba="0.05 0.35 0.65 1"/></material>
+  <material name="aed_red"><color rgba="0.88 0.03 0.05 1"/></material>
+  <material name="aed_white"><color rgba="1 1 1 1"/></material>
+  <material name="emergency_orange"><color rgba="0.95 0.30 0.04 1"/></material>
+
+  <link name="base_footprint"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 ${body_z}" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="16.0"/>
+      <inertia ixx="0.231" ixy="0" ixz="0" iyy="0.577" iyz="0" izz="0.645"/>
+    </inertial>
+    <visual>
+      <geometry><box size="${body_length} ${body_width} ${body_height}"/></geometry>
+      <material name="vbot_white"/>
+    </visual>
+    <collision>
+      <geometry><box size="${body_length} ${body_width} ${body_height}"/></geometry>
+    </collision>
+  </link>
+
+  <xacro:macro name="fixed_leg" params="name x y">
+    <link name="${name}_leg">
+      <visual>
+        <origin xyz="0 0 -0.20"/>
+        <geometry><cylinder radius="0.035" length="0.40"/></geometry>
+        <material name="vbot_dark"/>
+      </visual>
+    </link>
+    <joint name="${name}_leg_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${name}_leg"/>
+      <origin xyz="${x} ${y} -0.06"/>
+    </joint>
+  </xacro:macro>
+  <xacro:fixed_leg name="front_left" x="0.23" y="0.13"/>
+  <xacro:fixed_leg name="front_right" x="0.23" y="-0.13"/>
+  <xacro:fixed_leg name="rear_left" x="-0.23" y="0.13"/>
+  <xacro:fixed_leg name="rear_right" x="-0.23" y="-0.13"/>
+
+  <link name="lidar_link">
+    <visual><geometry><cylinder radius="0.055" length="0.075"/></geometry><material name="sensor_blue"/></visual>
+    <collision><geometry><cylinder radius="0.055" length="0.075"/></geometry></collision>
+  </link>
+  <joint name="lidar_joint" type="fixed">
+    <!-- 激光雷达高于可拆卸 AED 箱，避免 SLAM 把自带载荷误建成两面纵向墙体。 -->
+    <parent link="base_link"/><child link="lidar_link"/><origin xyz="0 0 0.30"/>
+  </joint>
+
+  <link name="camera_link">
+    <visual><geometry><box size="0.08 0.10 0.05"/></geometry><material name="vbot_dark"/></visual>
+  </link>
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/><child link="camera_link"/><origin xyz="0.33 0 0.05"/>
+  </joint>
+  <link name="camera_optical_frame"/>
+  <joint name="camera_optical_joint" type="fixed">
+    <parent link="camera_link"/><child link="camera_optical_frame"/>
+    <origin xyz="0.045 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+  <link name="imu_link"/>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/><child link="imu_link"/><origin xyz="0 0 0"/>
+  </joint>
+
+  <!-- 可拆卸 AED 载荷箱，仅使用近似几何体进行仿真。 -->
+  <link name="aed_case">
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="1.8"/>
+      <inertia ixx="0.009" ixy="0" ixz="0" iyy="0.014" iyz="0" izz="0.019"/>
+    </inertial>
+    <visual>
+      <geometry><box size="0.28 0.22 0.12"/></geometry>
+      <material name="aed_red"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0.061"/>
+      <geometry><box size="0.13 0.035 0.006"/></geometry>
+      <material name="aed_white"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0.062"/>
+      <geometry><box size="0.035 0.13 0.008"/></geometry>
+      <material name="aed_white"/>
+    </visual>
+    <collision><geometry><box size="0.28 0.22 0.12"/></geometry></collision>
+  </link>
+  <joint name="aed_carrier_joint" type="fixed">
+    <parent link="base_link"/><child link="aed_case"/>
+    <origin xyz="-0.13 0 0.205" rpy="0 0 0"/>
+  </joint>
+
+  <!-- 封闭式急救物资箱，仅由专业人员或受训人员按医疗要求开启。 -->
+  <link name="emergency_supply_case">
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="1.2"/>
+      <inertia ixx="0.005" ixy="0" ixz="0" iyy="0.006" iyz="0" izz="0.008"/>
+    </inertial>
+    <visual>
+      <geometry><box size="0.18 0.20 0.11"/></geometry>
+      <material name="emergency_orange"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0.056"/>
+      <geometry><box size="0.10 0.018 0.006"/></geometry>
+      <material name="aed_white"/>
+    </visual>
+    <collision><geometry><box size="0.18 0.20 0.11"/></geometry></collision>
+  </link>
+  <joint name="emergency_supply_carrier_joint" type="fixed">
+    <parent link="base_link"/><child link="emergency_supply_case"/>
+    <origin xyz="0.16 0 0.205" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo reference="base_link"><material>Gazebo/White</material></gazebo>
+  <gazebo reference="front_left_leg"><material>Gazebo/DarkGrey</material></gazebo>
+  <gazebo reference="front_right_leg"><material>Gazebo/DarkGrey</material></gazebo>
+  <gazebo reference="rear_left_leg"><material>Gazebo/DarkGrey</material></gazebo>
+  <gazebo reference="rear_right_leg"><material>Gazebo/DarkGrey</material></gazebo>
+  <gazebo reference="aed_case"><material>Gazebo/Red</material></gazebo>
+  <gazebo reference="emergency_supply_case"><material>Gazebo/Orange</material></gazebo>
+
+  <gazebo reference="lidar_link">
+    <sensor name="vbot_lidar" type="ray">
+      <always_on>true</always_on><update_rate>8</update_rate><visualize>true</visualize>
+      <pose>0 0 0 0 0 0</pose>
+      <ray>
+        <scan><horizontal><samples>360</samples><resolution>1</resolution><min_angle>-3.14159</min_angle><max_angle>3.14159</max_angle></horizontal></scan>
+        <range><min>0.12</min><max>15.0</max><resolution>0.01</resolution></range>
+        <noise><type>gaussian</type><mean>0.0</mean><stddev>0.006</stddev></noise>
+      </ray>
+      <plugin name="vbot_laser_plugin" filename="libgazebo_ros_ray_sensor.so">
+        <ros><remapping>~/out:=scan</remapping></ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>lidar_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="imu_link">
+    <sensor name="vbot_imu" type="imu">
+      <always_on>true</always_on><update_rate>50</update_rate><visualize>false</visualize>
+      <plugin name="vbot_imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+        <ros><remapping>~/out:=imu/data</remapping></ros>
+        <initial_orientation_as_reference>false</initial_orientation_as_reference>
+        <frame_name>imu_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="camera_link">
+    <sensor name="vbot_depth_camera" type="depth">
+      <always_on>true</always_on><update_rate>5</update_rate><visualize>false</visualize>
+      <camera>
+        <horizontal_fov>1.10</horizontal_fov>
+        <image><width>160</width><height>90</height><format>R8G8B8</format></image>
+        <clip><near>0.15</near><far>8.0</far></clip>
+      </camera>
+      <plugin name="vbot_depth_camera_plugin" filename="libgazebo_ros_camera.so">
+        <ros><namespace>/camera</namespace></ros>
+        <camera_name>depth</camera_name>
+        <frame_name>camera_optical_frame</frame_name>
+        <hack_baseline>0.06</hack_baseline>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="vbot_planar_controller" filename="libgazebo_ros_planar_move.so">
+      <ros>
+        <namespace>/</namespace>
+        <remapping>cmd_vel:=vel_cmd</remapping>
+      </ros>
+      <update_rate>50</update_rate>
+      <publish_rate>30</publish_rate>
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <covariance_x>0.0025</covariance_x>
+      <covariance_y>0.0025</covariance_y>
+      <covariance_yaw>0.005</covariance_yaw>
+    </plugin>
+  </gazebo>
+</robot>

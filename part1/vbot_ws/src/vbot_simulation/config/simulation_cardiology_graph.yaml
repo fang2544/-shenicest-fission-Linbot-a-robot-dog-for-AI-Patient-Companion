@@ -1,0 +1,38 @@
+hospital: gazebo_hospital_cardiology
+
+cost_model:
+  unit: seconds
+  reference_walk_speed_mps: 0.35
+  description: Gazebo 单楼层走廊将多科室流程展开为连续物理路径
+
+pickup_policy:
+  home_node: cardiology_3f
+  allowed_pickup_nodes: []
+  allowed_destination_nodes:
+    - cardiology_3f
+    - blood_draw_1f
+    - ecg_2f
+    - echo_waiting_2f
+    - cardiac_ultrasound_2f
+    - restroom_1f
+  accepted_signal_sources: [voice_gateway, staff_console]
+  arbitrary_coordinates_allowed: false
+
+floors:
+  SIM:
+    map_name: hospital_sim
+    nodes:
+      cardiology_3f: {name: 心内科诊室, type: poi, x: -4.5, y: 0.0, yaw: 0.0}
+      blood_draw_1f: {name: 抽血窗口, type: poi, x: -2.6, y: 0.0, yaw: 0.0}
+      ecg_2f: {name: 心电图室, type: poi, x: -0.9, y: 0.0, yaw: 0.0}
+      echo_waiting_2f: {name: 彩超候诊区, type: waiting, x: 0.9, y: 0.0, yaw: 0.0}
+      cardiac_ultrasound_2f: {name: 心脏彩超室, type: poi, x: 3.2, y: 0.0, yaw: 3.14}
+      restroom_1f: {name: 一楼无障碍卫生间, type: restroom, x: -0.9, y: -0.9, yaw: -1.57}
+
+edges:
+  - {id: cardiology_blood, from: cardiology_3f, to: blood_draw_1f, type: walk, distance_m: 1.9, travel_time_sec: 6, bidirectional: true}
+  - {id: blood_ecg, from: blood_draw_1f, to: ecg_2f, type: walk, distance_m: 1.7, travel_time_sec: 5, bidirectional: true}
+  - {id: ecg_echo_wait, from: ecg_2f, to: echo_waiting_2f, type: walk, distance_m: 1.8, travel_time_sec: 6, bidirectional: true}
+  - {id: echo_wait_ultrasound, from: echo_waiting_2f, to: cardiac_ultrasound_2f, type: walk, distance_m: 2.3, travel_time_sec: 7, bidirectional: true}
+  - {id: ultrasound_cardiology_return, from: cardiac_ultrasound_2f, to: cardiology_3f, type: walk, distance_m: 7.7, travel_time_sec: 20, bidirectional: false}
+  - {id: ecg_restroom, from: ecg_2f, to: restroom_1f, type: walk, distance_m: 0.9, travel_time_sec: 3, bidirectional: true}

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>restroom_priority_assistance</name>
+  <version>0.2.0</version>
+  <description>把找厕所语音转换为最高优先目的地请求。</description>
+  <maintainer email="developer@example.com">聆灵 VBot 二次开发团队</maintainer>
+  <license>Apache-2.0</license>
+  <buildtool_depend>ament_python</buildtool_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>function_msgs</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <test_depend>ament_pytest</test_depend>
+  <test_depend>python3-pytest</test_depend>
+  <export><build_type>ament_python</build_type></export>
+</package>

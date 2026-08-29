@@ -1,0 +1,7 @@
+minimum_confidence: 0.65
+destinations:
+  restroom_1f:
+    label: 一楼无障碍卫生间
+    phrases: [先去厕所, 我要去厕所, 带我去厕所, 去卫生间, 先去卫生间, 我想上厕所]
+    depart_prompt: 收到，聆灵将暂停当前路线，优先带您去卫生间，之后继续未完成的检查。
+    arrival_prompt: 已到达一楼无障碍卫生间。需要继续检查时请跟随聆灵。
