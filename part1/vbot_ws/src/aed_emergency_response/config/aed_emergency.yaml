@@ -1,0 +1,68 @@
+aed_emergency_node:
+  ros__parameters:
+    asr_topic: /asr/result
+    goal_nav_action: /goal_nav
+    speech_text_data_service: /speech/SpeechTextData
+    status_topic: /aed_emergency/status
+    marker_topic: /aed_emergency/markers
+    minimum_confidence: 0.65
+    default_location: ecg_2f
+    action_server_timeout_sec: 15.0
+    navigation_timeout_sec: 240.0
+    guidance_interval_sec: 6.0
+    report_path: /vbot_ws/reports/aed_emergency_events.json
+
+    aed_keywords: ["aed", "自动体外除颤器", "除颤器", "电除颤"]
+    cardiac_keywords: ["心脏骤停", "心跳停了", "没有心跳", "心脏起搏", "心源性猝死", "突然倒地", "倒地不醒", "没有呼吸"]
+    bleeding_keywords: ["大出血", "严重出血", "流血不止", "止血"]
+    allergy_keywords: ["严重过敏", "过敏性休克", "喉咙肿", "过敏呼吸困难"]
+    hypoglycemia_keywords: ["低血糖", "血糖太低", "低血糖昏迷"]
+    medical_supply_keywords: ["急救药品", "急救箱", "急救物资"]
+    urgency_keywords: ["需要", "拿来", "送来", "送过去", "快来", "赶快", "马上", "急救", "救命", "紧急"]
+    negative_phrases: ["不需要aed", "不要aed", "无需aed", "取消急救", "只是演练", "模拟演练"]
+
+    locations_json: >-
+      {"cardiology_3f":{"name":"心内科诊室","x":-4.5,"y":0.0,"yaw":0.0,"aliases":["心内科","三楼心内科"]},
+       "blood_draw_1f":{"name":"抽血窗口","x":-2.6,"y":0.0,"yaw":0.0,"aliases":["抽血窗口","抽血处","一楼抽血"]},
+       "ecg_2f":{"name":"心电图室","x":-0.9,"y":0.0,"yaw":0.0,"aliases":["心电图室","心电图","二楼心电图"]},
+       "echo_waiting_2f":{"name":"彩超候诊区","x":0.9,"y":0.0,"yaw":0.0,"aliases":["彩超候诊区","候诊区"]},
+       "cardiac_ultrasound_2f":{"name":"心脏彩超室","x":3.2,"y":0.0,"yaw":3.14,"aliases":["心脏彩超室","彩超室","二楼彩超"]}}
+
+    supplies_json: >-
+      {"cardiac":["AED","一次性手套","呼吸膜"],
+       "bleeding":["止血敷料","无菌纱布","弹性绷带","一次性手套"],
+       "allergy":["急救箱","肾上腺素自动注射器封存盒"],
+       "hypoglycemia":["血糖仪","葡萄糖凝胶封存盒","一次性手套"],
+       "general":["综合急救箱","急救药品封存盒"]}
+
+    cardiac_guidance_steps:
+      - "我是聆灵。AED已送达。请确认现场安全，检查患者是否有反应和正常呼吸。"
+      - "请立即呼叫院内急救团队并拨打120，打开免提，准确报告患者位置。"
+      - "若患者无反应且没有正常呼吸或仅有濒死喘息，请立即胸外按压。成人按压频率每分钟100到120次。"
+      - "打开AED，严格听从设备语音提示。暴露并擦干胸部，按照电极片图示贴在裸露皮肤上。"
+      - "AED分析心律时，所有人不要接触患者。"
+      - "若AED提示电击，确认无人接触患者后再按电击键；若设备提示不建议电击，请不要电击。"
+      - "电击后或不建议电击时，立即继续胸外按压约两分钟，并继续听从AED提示，直到急救人员接手或患者恢复正常呼吸。"
+
+    bleeding_guidance_steps:
+      - "我是聆灵，止血急救物资已送达。请立即呼叫院内急救团队并拨打120。"
+      - "请戴上手套，用止血敷料或纱布直接持续按压出血处。"
+      - "敷料被血浸透时不要揭掉，在上面继续加敷料并持续按压。"
+      - "止血带等器材只由受过训练的人员按规范使用，等待急救人员接手。"
+
+    allergy_guidance_steps:
+      - "我是聆灵，严重过敏急救物资已送达。请立即呼叫院内急救团队并拨打120。"
+      - "让患者保持便于呼吸的姿势，持续观察意识和呼吸。"
+      - "肾上腺素自动注射器仅由患者本人、医护人员或受过训练者按医嘱和产品说明使用。"
+      - "若患者无反应且没有正常呼吸，立即开始心肺复苏并等待急救人员接手。"
+
+    hypoglycemia_guidance_steps:
+      - "我是聆灵，低血糖急救物资已送达。请立即通知医护人员。"
+      - "患者清醒且能安全吞咽时，葡萄糖凝胶只按医嘱或产品说明使用。"
+      - "患者意识不清或不能吞咽时不要喂食、喂水或口服药，立即拨打120。"
+      - "持续观察呼吸和意识，等待医护人员接手。"
+
+    general_guidance_steps:
+      - "我是聆灵，综合急救箱和急救药品封存盒已送达。"
+      - "请立即通知院内急救团队，严重情况拨打120。"
+      - "药品仅由有资质医护人员、患者本人或受过训练者依医嘱和标签使用。"
