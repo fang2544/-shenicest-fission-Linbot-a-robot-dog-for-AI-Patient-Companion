@@ -1,0 +1,20 @@
+wakeup_welcome_node:
+  ros__parameters:
+    wakeup_topic: /speech/WakeupInfo
+    tts_notification_topic: /speech/ChatTtsNotification
+    speech_text_data_service: /speech/SpeechTextData
+    play_emotion_service: /peripheral/PlayEmotion
+    get_supported_emotions_service: /peripheral/GetSupportedEmotions
+    welcome_text: "你好，我是你的陪诊伙伴聆灵，接下来我将全程陪伴你。"
+    welcome_emotion_mode: 1
+    welcome_emotion_duration_ms: -1
+    rewelcome_cooldown_sec: 5.0
+    service_ready_timeout_sec: 2.0
+    service_retry_interval_sec: 0.1
+    tts_notification_timeout_sec: 15.0
+    enable_command_word_trigger: false
+    command_word_topic: /speech/CommandWord
+    command_word_trigger_text: "你好聆灵"
+    topic_qos_depth: 10
+    wakeup_qos_reliability: reliable
+    tts_notification_qos_reliability: reliable

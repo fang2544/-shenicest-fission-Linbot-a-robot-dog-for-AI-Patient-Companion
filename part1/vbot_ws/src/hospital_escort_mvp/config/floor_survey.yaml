@@ -1,0 +1,26 @@
+hospital_floor_surveyor:
+  ros__parameters:
+    floor: F1
+    map_name: surveyed_F1
+    global_frame: map
+    base_frame: base_link
+    slam_mode_service: /slam/set_mode
+    save_map_service: /lightning/save_map
+    slam_status_topic: /slam/status
+    operation_timeout_sec: 30.0
+    survey_file: /vbot_ws/maps/surveyed_hospital_graph.yaml
+    reference_walk_speed_mps: 0.4
+
+    poi_id: poi_1
+    poi_name: 现场点位
+    poi_type: poi
+    elevator_id: ''
+
+    edge_id: edge_1
+    edge_from: ''
+    edge_to: ''
+    edge_type: walk
+    edge_travel_time_sec: 10.0
+    edge_distance_m: -1.0
+    edge_elevator_id: ''
+    edge_bidirectional: true

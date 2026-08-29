@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>wakeup_welcome</name>
+  <version>0.2.0</version>
+  <description>收到 VBot 唤醒事件后播放欢迎表情和语音。</description>
+  <maintainer email="developer@example.com">聆灵 VBot 二次开发团队</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>speech_msgs</exec_depend>
+  <exec_depend>peripheral_msgs</exec_depend>
+  <exec_depend>ros2launch</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

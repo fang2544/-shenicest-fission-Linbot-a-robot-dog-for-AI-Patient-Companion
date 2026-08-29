@@ -1,0 +1,6 @@
+hospital_pickup_dispatcher:
+  ros__parameters:
+    home_node: cardiology_3f
+    require_patient_token: true
+    navigator_auto_confirm_elevator: false
+    navigator_report_path: /vbot_ws/reports/pickup_route.json
