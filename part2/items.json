@@ -1,0 +1,11 @@
+{
+  "howto": "每条一个物品。color 只能用：红 橙 黄 绿 青 蓝 紫 粉 棕 白 黑 灰。改完保存，程序里按 l 重新加载。",
+  "speak_on_appear": true,
+  "items": [
+    {"name": "肾上腺素自动注射器", "color": "绿"},
+    {"name": "口服葡萄糖片", "color": "黄"},
+    {"name": "阿司匹林咀嚼片", "color": "红", "confirm": true},
+    {"name": "沙丁胺醇吸入剂", "color": "白", "confirm": true},
+    {"name": "纳洛酮鼻喷雾", "color": "蓝"}
+  ]
+}
